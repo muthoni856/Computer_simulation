@@ -117,4 +117,55 @@ class QueueSimulationGUI extends JFrame {
             customersWhoWait = 5;
             totalServerIdleTime += serverIdleTime;
         }
+// Add total row
+        tableModel.addRow(new Object[]{
+                "Total", // Customer
+                totalArrivalTime, // IAT
+                "", // Clock Time (not applicable for total)
+                totalServiceTime, // Service Time
+                "", // Service Start (not applicable for total)
+                "", // Service End (not applicable for total)
+                numberInSystem, // No. in System
+                customersWhoWait, // No. in Queue
+                Math.round(totalWaitingTime * 10.0) / 10.0, // Waiting Time
+                Math.round(totalTimeInTheSystem * 10.0) / 10.0, // Time in the System
+                Math.round(totalServerIdleTime * 10.0) / 10.0
+        });
+    }
 
+
+    private void displayMetrics() {
+        // Get the total service time, replacing empty string with 0 if necessary
+        double totalServiceTime = tableModel.getValueAt(tableModel.getRowCount() - 1, 3).equals("") ? 0 : (double) tableModel.getValueAt(tableModel.getRowCount() - 1, 3);
+// Calculate metrics
+        double averageWaitingTime = totalWaitingTime / totalCustomers;
+        double probabilityOfWait = customersWhoWait / totalCustomers;
+        double proportionOfIdleTime = totalServerIdleTime / (double) tableModel.getValueAt(tableModel.getRowCount() - 2, 5);
+        double proportionOfBusyTime = 1 - proportionOfIdleTime;
+        double averageServiceTime = totalServiceTime / totalCustomers;
+        double averageWaitingTimeForWaitingCustomers = totalWaitingTime / customersWhoWait;
+        double averageTimeInTheSystem = totalTimeInTheSystem / totalCustomers;
+        double averageTimeBetweenArrivals = totalArrivalTime / (totalCustomers - 1);
+
+        // Display metrics
+        JTextArea metricsArea = new JTextArea();
+        metricsArea.append("Metrics:\n");
+        metricsArea.append("1. Average waiting time for the customer = " + Math.round(averageWaitingTime * 100.0) / 100.0 + "\n");
+        metricsArea.append("2. Probability that the customer has to wait in the queue = " + Math.round(probabilityOfWait * 100.0) / 100.0 + "\n");
+        metricsArea.append("3. Proportion of idle time of the server = " + Math.round(proportionOfIdleTime * 100.0) / 100.0 + "\n");
+        metricsArea.append("4. Proportion of time the server was busy = " + Math.round(proportionOfBusyTime * 100.0) / 100.0 + "\n");
+        metricsArea.append("5. Average service time = " + Math.round(averageServiceTime * 100.0) / 100.0 + "\n");
+        metricsArea.append("6. Average waiting time for those who have to wait = " + Math.round(averageWaitingTimeForWaitingCustomers * 100.0) / 100.0 + "\n");
+        metricsArea.append("7. Average time spent in the system = " + Math.round(averageTimeInTheSystem * 100.0) / 100.0 + "\n");
+        metricsArea.append("8. Average time between arrivals = " + Math.round(averageTimeBetweenArrivals * 100.0) / 100.0 + "\n");
+
+        getContentPane().add(metricsArea, BorderLayout.SOUTH);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            QueueSimulationGUI gui = new QueueSimulationGUI();
+            gui.setVisible(true);
+        });
+    }
+}
