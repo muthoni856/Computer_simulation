@@ -8,7 +8,7 @@ class QueueSimulationGUI extends JFrame {
     private DefaultTableModel tableModel;
 
     public QueueSimulationGUI() {
-        setTitle("Queue Simulation Results");
+        setTitle("Queue Simulation's Table");
         setSize(1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -36,10 +36,10 @@ class QueueSimulationGUI extends JFrame {
 
         simulateQueue();
 
-        // Calculate and display metrics
+        // Displaying metrics
         displayMetrics();
     }
-    // Initialize variables
+
     double clockTime = 0; // Start with 0
     double serverIdleTime = 0;
     double totalServerIdleTime = 0;
@@ -59,7 +59,7 @@ class QueueSimulationGUI extends JFrame {
         // Clear the table
         tableModel.setRowCount(0);
 
-        for (int i = 0; i < 10; i++) { // Loop for all 10 customers
+        for (int i = 0; i < 10; i++) { // For all the 10 customers
             double arrivalTime = arrivalTimes[i];
             double serviceTime = serviceTimes[i];
 
@@ -135,9 +135,9 @@ class QueueSimulationGUI extends JFrame {
 
 
     private void displayMetrics() {
-        // Get the total service time, replacing empty string with 0 if necessary
+
         double totalServiceTime = tableModel.getValueAt(tableModel.getRowCount() - 1, 3).equals("") ? 0 : (double) tableModel.getValueAt(tableModel.getRowCount() - 1, 3);
-// Calculate metrics
+
         double averageWaitingTime = totalWaitingTime / totalCustomers;
         double probabilityOfWait = customersWhoWait / totalCustomers;
         double proportionOfIdleTime = totalServerIdleTime / (double) tableModel.getValueAt(tableModel.getRowCount() - 2, 5);
@@ -150,14 +150,14 @@ class QueueSimulationGUI extends JFrame {
         // Display metrics
         JTextArea metricsArea = new JTextArea();
         metricsArea.append("Metrics:\n");
-        metricsArea.append("1. Average waiting time for the customer = " + Math.round(averageWaitingTime * 100.0) / 100.0 + "\n");
-        metricsArea.append("2. Probability that the customer has to wait in the queue = " + Math.round(probabilityOfWait * 100.0) / 100.0 + "\n");
-        metricsArea.append("3. Proportion of idle time of the server = " + Math.round(proportionOfIdleTime * 100.0) / 100.0 + "\n");
-        metricsArea.append("4. Proportion of time the server was busy = " + Math.round(proportionOfBusyTime * 100.0) / 100.0 + "\n");
-        metricsArea.append("5. Average service time = " + Math.round(averageServiceTime * 100.0) / 100.0 + "\n");
-        metricsArea.append("6. Average waiting time for those who have to wait = " + Math.round(averageWaitingTimeForWaitingCustomers * 100.0) / 100.0 + "\n");
-        metricsArea.append("7. Average time spent in the system = " + Math.round(averageTimeInTheSystem * 100.0) / 100.0 + "\n");
-        metricsArea.append("8. Average time between arrivals = " + Math.round(averageTimeBetweenArrivals * 100.0) / 100.0 + "\n");
+        metricsArea.append("a. Average waiting time for the customer = " + Math.round(averageWaitingTime * 100.0) / 100.0 + "\n");
+        metricsArea.append("b. Proportion of idle time of the server = " + Math.round(proportionOfIdleTime * 100.0) / 100.0 + "\n");
+        metricsArea.append("c. Proportion of time the server was busy = " + Math.round(proportionOfBusyTime * 100.0) / 100.0 + "\n");
+        metricsArea.append("d. Probability that the customer has to wait in the queue = " + Math.round(probabilityOfWait * 100.0) / 100.0 + "\n");
+        metricsArea.append("e. Average waiting time for those who have to wait = " + Math.round(averageWaitingTimeForWaitingCustomers * 100.0) / 100.0 + "\n");
+        metricsArea.append("f. Average time spent in the system = " + Math.round(averageTimeInTheSystem * 100.0) / 100.0 + "\n");
+        metricsArea.append("g. Average time between arrivals = " + Math.round(averageTimeBetweenArrivals * 100.0) / 100.0 + "\n");
+        metricsArea.append("h. Average service time = " + Math.round(averageServiceTime * 100.0) / 100.0 + "\n");
 
         getContentPane().add(metricsArea, BorderLayout.SOUTH);
     }
