@@ -56,4 +56,65 @@ class QueueSimulationGUI extends JFrame {
     private void simulateQueue() {
         double[] arrivalTimes = {1.9, 1.3, 1.1, 1.0, 2.2, 2.1, 1.8, 2.8, 2.7, 2.4};
         double[] serviceTimes = {1.7, 1.8, 1.5, 0.9, 0.6, 1.7, 1.1, 1.8, 0.8, 0.5};
+        // Clear the table
+        tableModel.setRowCount(0);
+
+        for (int i = 0; i < 10; i++) { // Loop for all 10 customers
+            double arrivalTime = arrivalTimes[i];
+            double serviceTime = serviceTimes[i];
+
+            // Calculate clock time for the current customer
+            clockTime += arrivalTime;
+
+            // Calculate service start and end times
+            double serviceStart = i == 0 ? arrivalTime : (clockTime > (double) tableModel.getValueAt(i - 1, 5)) ? clockTime : (double) tableModel.getValueAt(i - 1, 5); // Service End of previous customer
+            double serviceEnd = serviceStart + serviceTime;
+
+            // Update number in system and number in queue
+            int customersInSystem;
+            int customersInQueue;
+            if (i == 0) {
+                customersInSystem = 1;
+            } else {
+                customersInSystem = 0;
+                for (int j = 0; j <= i; j++) {
+                    if (clockTime < (double) tableModel.getValueAt(i - 1, 5)) { // You need to replace ??? with the appropriate condition
+                        customersInSystem++;
+                    }
+                }
+            }
+            customersInQueue = customersInSystem - 1;
+
+            // Calculate waiting time and time in the system for the current customer
+            double waitingTime = Math.max(serviceStart - clockTime, 0);
+            double timeInTheSystem = waitingTime + serviceTime;
+
+            // Calculate server idle time
+            serverIdleTime = i == 0 ? 0 : Math.max(clockTime - (double) tableModel.getValueAt(i - 1, 5), 0); // Server Idle Time
+
+            // Add data to the table
+            tableModel.addRow(new Object[]{
+                    i + 1, // Customer
+                    arrivalTime, // IAT
+                    Math.round(clockTime * 10.0) / 10.0, // Clock Time
+                    serviceTime, // Service Time
+                    Math.round(serviceStart * 10.0) / 10.0, // Service Start
+                    Math.round(serviceEnd * 10.0) / 10.0, // Service End
+                    customersInSystem, // No. in System
+                    customersInQueue, // No. in Queue
+                    Math.round(waitingTime * 10.0) / 10.0, // Waiting Time
+                    Math.round(timeInTheSystem * 10.0) / 10.0, // Time in the System
+                    Math.round(serverIdleTime * 10.0) / 10.0 // Server Idle Time
+            });
+
+            // Update totals
+            totalWaitingTime += waitingTime;
+            totalTimeInTheSystem += timeInTheSystem;
+            totalServiceTime += serviceTime;
+            totalArrivalTime += arrivalTime;
+            totalCustomers++;
+            numberInSystem = 15;
+            customersWhoWait = 5;
+            totalServerIdleTime += serverIdleTime;
+        }
 
