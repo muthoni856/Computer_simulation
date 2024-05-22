@@ -23,14 +23,14 @@ class QueueSimulationGUI extends JFrame {
 
         // Add columns to the table
         tableModel.addColumn("Customer");
-        tableModel.addColumn("IAT");
+        tableModel.addColumn("I.A.T");
         tableModel.addColumn("Clock Time");
         tableModel.addColumn("Service Time");
         tableModel.addColumn("Service Start");
         tableModel.addColumn("Service End");
-        tableModel.addColumn("No. in System");
-        tableModel.addColumn("No. in Queue");
-        tableModel.addColumn("Waiting Time");
+        tableModel.addColumn("Number in System");
+        tableModel.addColumn("Number in Queue");
+        tableModel.addColumn("Queue Waiting Time");
         tableModel.addColumn("Time in the System");
         tableModel.addColumn("Server Idle Time");
 
