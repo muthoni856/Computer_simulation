@@ -22,7 +22,7 @@ class QueueSimulationGUI extends JFrame {
         panel.add(scrollPane, BorderLayout.CENTER);
 
         // Add columns to the table
-        tableModel.addColumn("Customer");
+        tableModel.addColumn("Customer No.");
         tableModel.addColumn("I.A.T");
         tableModel.addColumn("Clock Time");
         tableModel.addColumn("Service Time");
